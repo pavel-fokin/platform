@@ -1,0 +1,44 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid()) @map("id")
+  email     String   @unique @map("email")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("user")
+}
+
+model Profile {
+  id                String   @id @default(uuid()) @map("id")
+  userId            String   @unique @map("user_id")
+  name              String   @map("name")
+  role              String   @map("role")
+  yearsOfExperience Int      @map("years_of_experience")
+  location          String   @map("location")
+
+  interviewRate         Float  @map("interview_rate")
+  interviewRateCurrency String @map("interview_rate_currency")
+
+  publishedAt   DateTime? @map("published_at")
+  publishedLink String?   @unique @map("published_link")
+  isPublished   Boolean   @default(false) @map("is_published")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("profile")
+}
