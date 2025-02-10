@@ -55,7 +55,7 @@ const Profile = () => {
     <div className="grow flex flex-col space-y-10">
       <div className="flex flex-row items-center justify-between">
         <h2 className="font-semibold">Profile</h2>
-        <Button size="lg" variant="ghost" asChild>
+        <Button size="lg" variant="outline" asChild>
           <Link to="/me/edit-profile">Edit profile</Link>
         </Button>
       </div>

@@ -9,7 +9,11 @@ import {
 export default [
   index('routes/index.tsx'),
 
-  route('/:nameSlug', 'routes/published-profile.tsx'),
+  ...prefix('/:nameSlug', [
+    layout('routes/profile-published/layout.tsx', [
+      index('routes/profile-published/profile-published.tsx'),
+    ]),
+  ]),
 
   route('/auth/magic-link', 'routes/auth/magic-link.tsx'),
 
