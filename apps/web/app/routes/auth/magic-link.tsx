@@ -26,7 +26,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 export default function MagicLink() {
   return (
     <main className="flex flex-col items-center justify-center h-screen px-6 sm:px-10 py-10 sm:py-20 space-y-10">
-      <div className="max-w-md w-full space-y-4">
+      <div className="max-w-sm w-full space-y-4">
         <div className="flex flex-col items-center justify-center">
           <h2 className="text-center text-3xl font-extrabold">
             Fair Interviews

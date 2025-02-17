@@ -10,8 +10,9 @@ export default [
   index('routes/index.tsx'),
 
   ...prefix('/:nameSlug', [
-    layout('routes/profile-published/layout.tsx', [
-      index('routes/profile-published/profile-published.tsx'),
+    layout('routes/profile-public/layout.tsx', [
+      index('routes/profile-public/profile-public.tsx'),
+      route('/recruiter-auth', 'routes/profile-public/recruiter-auth.tsx'),
     ]),
   ]),
 

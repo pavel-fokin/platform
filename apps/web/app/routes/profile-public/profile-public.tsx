@@ -1,10 +1,11 @@
-import { redirect, useLoaderData, type LoaderFunctionArgs } from 'react-router';
-
 import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from '~/components/ui/avatar';
+  Link,
+  redirect,
+  useLoaderData,
+  type LoaderFunctionArgs,
+} from 'react-router';
+
+import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { MapPin } from 'lucide-react';
 import * as profileService from '~/services/profile.server';
 import { Button } from '~/components/ui/button';
@@ -32,7 +33,7 @@ const PublishedProfile = () => {
   }
 
   return (
-    <div className="flex flex-col space-y-10 max-w-screen-sm mx-auto p-4 items-center">
+    <div className="flex flex-col space-y-10 p-4 items-center">
       <div className="grow flex flex-col space-y-4">
         <div className="flex flex-col items-center space-y-3">
           <Avatar className="w-28 h-28 shadow-lg">
@@ -59,7 +60,9 @@ const PublishedProfile = () => {
             interview
           </p>
         </div>
-        <Button className="w-full">Book interview</Button>
+        <Button className="w-full" asChild>
+          <Link to="recruiter-auth">Book interview</Link>
+        </Button>
       </div>
     </div>
   );
