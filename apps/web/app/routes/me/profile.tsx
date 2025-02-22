@@ -111,7 +111,6 @@ const Profile = () => {
               <Link
                 className="hover:underline"
                 to={`/@${profile.publishedLink}`}
-                target="_blank"
               >
                 {profile.publishedLink}
               </Link>

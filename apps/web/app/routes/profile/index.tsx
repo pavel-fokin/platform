@@ -61,7 +61,7 @@ const PublishedProfile = () => {
           </p>
         </div>
         <Button className="w-full" asChild>
-          <Link to="recruiter-auth">Book interview</Link>
+          <Link to="auth">Book interview</Link>
         </Button>
       </div>
     </div>

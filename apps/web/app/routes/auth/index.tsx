@@ -12,7 +12,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const email = formData.get('email');
 
-  const token = await authService.sendMagicLink(email as string);
+  const token = await authService.sendMagicLink(email as string, 'CANDIDATE');
 
   session.set('userId', token);
 
@@ -26,13 +26,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 export default function MagicLink() {
   return (
     <main className="flex flex-col items-center justify-center h-screen px-6 sm:px-10 py-10 sm:py-20 space-y-10">
-      <div className="max-w-sm w-full space-y-4">
-        <div className="flex flex-col items-center justify-center">
+      <div className="max-w-sm w-full">
+        <div className="flex flex-col items-center justify-center space-y-4">
           <h2 className="text-center text-3xl font-extrabold">
             Fair Interviews
           </h2>
           <p className="text-center text-sm text-gray-600 dark:text-gray-400">
-            Enter your email to log in or create an account.
+            Enter your email to receive a magic link.
           </p>
         </div>
         <Form method="post">

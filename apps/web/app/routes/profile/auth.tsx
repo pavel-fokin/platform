@@ -22,15 +22,16 @@ interface ActionData {
 }
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
-  const session = await getSession(request.headers.get('Cookie'));
-  const userId = session.get('userId');
-  if (userId) {
-    return redirect('/me');
-  }
-
   const { nameSlug } = params;
   if (!nameSlug || !nameSlug.startsWith('@')) {
     return redirect('/');
+  }
+
+  const session = await getSession(request.headers.get('Cookie'));
+  const userId = session.get('userId');
+  console.log('userId', userId);
+  if (userId) {
+    return redirect(`/${nameSlug}/payment`);
   }
 
   const profile = await profileService.getProfileByPublishedLink(
@@ -49,11 +50,11 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const email = formData.get('email');
 
-  const token = await authService.sendMagicLink(email as string);
+  const token = await authService.sendMagicLink(email as string, 'RECRUITER');
 
   session.set('userId', token);
 
-  return redirect('/me', {
+  return redirect('/payment', {
     headers: {
       'Set-Cookie': await commitSession(session),
     },

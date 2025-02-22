@@ -10,13 +10,14 @@ export default [
   index('routes/index.tsx'),
 
   ...prefix('/:nameSlug', [
-    layout('routes/profile-public/layout.tsx', [
-      index('routes/profile-public/profile-public.tsx'),
-      route('/recruiter-auth', 'routes/profile-public/recruiter-auth.tsx'),
+    layout('routes/profile/layout.tsx', [
+      index('routes/profile/index.tsx'),
+      route('/auth', 'routes/profile/auth.tsx'),
+      route('/payment', 'routes/profile/payment.tsx'),
     ]),
   ]),
 
-  route('/auth/magic-link', 'routes/auth/magic-link.tsx'),
+  route('/auth/login', 'routes/auth/index.tsx'),
 
   ...prefix('/me', [
     layout('routes/me/layout.tsx', [

@@ -1,10 +1,11 @@
+import type { UserRole } from '@prisma/client';
 import prisma from '~/lib/prisma.server';
 
 const generateToken = async (userId: string): Promise<string> => {
   return userId;
 };
 
-const sendMagicLink = async (email: string): Promise<string> => {
+const sendMagicLink = async (email: string, role: UserRole): Promise<string> => {
   let user = await prisma.user.findUnique({
     where: {
       email,
@@ -16,6 +17,7 @@ const sendMagicLink = async (email: string): Promise<string> => {
       const createdUser = await prisma.user.create({
         data: {
           email,
+          role: role,
         },
       });
 
