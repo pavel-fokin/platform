@@ -1,0 +1,18 @@
+---
+description: 
+globs: 
+---
+Objective:
+Create a platform that fairly compensates developers during technical interviews while offering recruiters a seamless booking and payment experience.
+
+Main Components:
+
+Authentication: Magic link-based, passwordless login for candidates and recruiters.
+Candidate Dashboard: Profile creation/editing, interview scheduling, and wallet management.
+Recruiter Flow: Viewing candidate profiles, booking interviews, making payments (Stripe escrow).
+Payments & Escrow: Stripe integration for secure, escrow-based funds management and candidate withdrawals.
+Email Notifications: Use SendGrid for transactional emails at key actions (e.g., booking, confirmation).
+UI & SSR: Use React Router 7 (with SSR) with ShadCN UI components for a minimal UI.
+
+
+UI/UX: Focus on using UX best practices to create a minimalistic but aesthetics UI. Prioritize user experience.
