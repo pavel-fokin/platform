@@ -25,19 +25,19 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return redirect('/');
   }
 
-  await prisma.payment.create({
-    data: {
-      userId: user.id,
-      amount: 1000,
-      currency: 'USD',
-      status: PaymentStatus.ESCROW,
-    },
-  });
-
-  await prisma.interview.create({
+  const interview = await prisma.interview.create({
     data: {
       candidateId: user.id,
       recruiterId: user.id,
+    },
+  });
+
+  await prisma.payment.create({
+    data: {
+      interviewId: interview.id,
+      amount: 1000,
+      currency: 'USD',
+      status: PaymentStatus.ESCROW,
     },
   });
 

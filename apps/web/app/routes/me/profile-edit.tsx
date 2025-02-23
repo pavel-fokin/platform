@@ -22,7 +22,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const session = await getSession(request.headers.get('Cookie'));
   const userId = session.get('userId');
   if (!userId) {
-    return redirect('/auth/magic-link');
+    return redirect('/auth/login');
   }
 
   const profile = await profileService.getProfileByUserId(userId);

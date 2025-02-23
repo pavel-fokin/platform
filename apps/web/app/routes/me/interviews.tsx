@@ -1,18 +1,19 @@
-import { type LoaderFunctionArgs, redirect } from 'react-router';
-import { useLoaderData } from 'react-router';
 import { format } from 'date-fns';
 import { CalendarIcon, ClockIcon, DollarSignIcon, MapPinIcon } from 'lucide-react';
+import type { ActionFunctionArgs, LoaderFunctionArgs } from 'react-router';
+import { Form, redirect, useLoaderData } from 'react-router';
 
-import { getSession } from '~/lib/sessions.server';
-import prisma from '~/lib/prisma.server';
+import { InterviewStatus, PaymentStatus } from '@prisma/client';
+import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
-import { Badge } from '~/components/ui/badge';
+import prisma from '~/lib/prisma.server';
+import { getSession } from '~/lib/sessions.server';
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const session = await getSession(request.headers.get('Cookie'));
   if (!session?.get('userId')) {
-    return redirect('/auth/magic-link');
+    return redirect('/auth/login');
   }
 
   const interviews = await prisma.interview.findMany({
@@ -29,6 +30,32 @@ export async function loader({ request }: LoaderFunctionArgs) {
   });
 
   return { interviews };
+}
+
+export async function action({ request }: ActionFunctionArgs) {
+  const session = await getSession(request.headers.get('Cookie'));
+  if (!session?.get('userId')) {
+    return redirect('/auth/login');
+  }
+
+  const formData = await request.formData();
+  const interviewId = formData.get('interviewId');
+
+  if (!interviewId) {
+    return redirect('/me/interviews');
+  }
+
+  await prisma.interview.update({
+    where: { id: interviewId as string },
+    data: { status: InterviewStatus.COMPLETED },
+  });
+
+  await prisma.payment.update({
+    where: { interviewId: interviewId as string },
+    data: { status: PaymentStatus.RELEASED },
+  });
+
+  return redirect('/me/interviews');
 }
 
 export default function Interviews() {
@@ -93,9 +120,12 @@ export default function Interviews() {
               </div>
             </CardContent>
             <CardFooter className="border-t pt-4">
-              <Button variant="outline" className="w-full">
-                View Details
-              </Button>
+              <Form method="post">
+                <input type="hidden" name="interviewId" value={interview.id} />
+                <Button variant="outline" className="w-full">
+                  Confirm completion
+                </Button>
+              </Form>
             </CardFooter>
           </Card>
         ))}

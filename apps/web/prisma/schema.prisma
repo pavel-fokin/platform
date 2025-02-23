@@ -25,6 +25,11 @@ enum PaymentStatus {
   REFUNDED
 }
 
+enum InterviewStatus {
+  PENDING
+  COMPLETED
+}
+
 model User {
   id        String   @id @default(uuid()) @map("id")
   email     String   @unique @map("email")
@@ -39,12 +44,12 @@ model User {
 }
 
 model Profile {
-  id                String   @id @default(uuid()) @map("id")
-  userId            String   @unique @map("user_id")
-  name              String   @map("name")
-  role              String   @map("role")
-  yearsOfExperience Int      @map("years_of_experience")
-  location          String   @map("location")
+  id                String @id @default(uuid()) @map("id")
+  userId            String @unique @map("user_id")
+  name              String @map("name")
+  role              String @map("role")
+  yearsOfExperience Int    @map("years_of_experience")
+  location          String @map("location")
 
   interviewRate         Float  @map("interview_rate")
   interviewRateCurrency String @map("interview_rate_currency")
@@ -60,25 +65,30 @@ model Profile {
 }
 
 model Payment {
-  id        String   @id @default(uuid()) @map("id")
-  userId    String   @map("user_id")
-  amount    Float    @map("amount")
-  currency  String   @map("currency")
-  status    PaymentStatus @default(ESCROW) @map("status")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id          String        @id @default(uuid()) @map("id")
+  interviewId String        @unique @map("interview_id")
+  amount      Float         @map("amount")
+  currency    String        @map("currency")
+  status      PaymentStatus @default(ESCROW) @map("status")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  interview   Interview     @relation("InterviewPayment", fields: [interviewId], references: [id])
 
   @@map("payment")
 }
 
 model Interview {
-  id          String   @id @default(uuid()) @map("id")
-  candidateId String   @map("candidate_id")
-  recruiterId String   @map("recruiter_id")
-  candidate   User     @relation("CandidateInterviews", fields: [candidateId], references: [id])
-  recruiter   User     @relation("RecruiterInterviews", fields: [recruiterId], references: [id])
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+  id          String         @id @default(uuid()) @map("id")
+  candidateId String         @map("candidate_id")
+  recruiterId String         @map("recruiter_id")
+  candidate   User           @relation("CandidateInterviews", fields: [candidateId], references: [id])
+  recruiter   User           @relation("RecruiterInterviews", fields: [recruiterId], references: [id])
+  createdAt   DateTime       @default(now()) @map("created_at")
+  updatedAt   DateTime       @updatedAt @map("updated_at")
+  status      InterviewStatus @default(PENDING) @map("status")
+
+  payment     Payment?       @relation("InterviewPayment")
 
   @@map("interview")
 }
