@@ -21,10 +21,11 @@ export default [
 
   ...prefix('/me', [
     layout('routes/me/layout.tsx', [
-      index('routes/me/profile.tsx'),
+      index('routes/me/dashboard.tsx'),
+      route('/profile', 'routes/me/profile.tsx'),
+      route('/profile-edit', 'routes/me/profile-edit.tsx'),
       route('/interviews', 'routes/me/interviews.tsx'),
       route('/wallet', 'routes/me/wallet.tsx'),
-      route('/edit-profile', 'routes/me/profile-edit.tsx'),
     ]),
   ]),
 ] satisfies RouteConfig;

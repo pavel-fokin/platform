@@ -1,22 +1,18 @@
 import { Outlet } from 'react-router';
+import { Sidebar } from '~/components/sidebar';
 
-import {
-  Sidebar,
-} from '~/components/sidebar';
-import {
-  SidebarProvider,
-} from '~/components/ui/sidebar';
-
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout() {
   return (
-    <div className="flex flex-col min-h-screen">
-      <SidebarProvider>
-        <Sidebar>
-          <main className="grow flex flex-col max-w-screen-sm mx-auto p-4">
-            <Outlet />
-          </main>
-        </Sidebar>
-      </SidebarProvider>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <Sidebar>
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-4xl">
+            <div className="py-8">
+              <Outlet />
+            </div>
+          </div>
+        </div>
+      </Sidebar>
     </div>
   );
 }
