@@ -4,6 +4,7 @@ import { useLoaderData, Form, redirect } from 'react-router';
 import { Button } from '~/components/ui/button';
 import prisma from '~/lib/prisma.server';
 import { getSession } from '~/lib/sessions.server';
+import { PaymentStatus } from '@prisma/client';
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const session = await getSession(request.headers.get('Cookie'));
@@ -23,6 +24,22 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   if (!user) {
     return redirect('/');
   }
+
+  await prisma.payment.create({
+    data: {
+      userId: user.id,
+      amount: 1000,
+      currency: 'USD',
+      status: PaymentStatus.ESCROW,
+    },
+  });
+
+  await prisma.interview.create({
+    data: {
+      candidateId: user.id,
+      recruiterId: user.id,
+    },
+  });
 
   return { user };
 };

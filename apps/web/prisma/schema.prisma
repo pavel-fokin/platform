@@ -18,12 +18,22 @@ enum UserRole {
   RECRUITER
 }
 
+enum PaymentStatus {
+  PENDING
+  ESCROW
+  RELEASED
+  REFUNDED
+}
+
 model User {
   id        String   @id @default(uuid()) @map("id")
   email     String   @unique @map("email")
   role      UserRole @default(CANDIDATE) @map("role")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+
+  candidateInterviews Interview[] @relation("CandidateInterviews")
+  recruiterInterviews Interview[] @relation("RecruiterInterviews")
 
   @@map("user")
 }
@@ -51,12 +61,24 @@ model Profile {
 
 model Payment {
   id        String   @id @default(uuid()) @map("id")
-  userId    String   @unique @map("user_id")
+  userId    String   @map("user_id")
   amount    Float    @map("amount")
   currency  String   @map("currency")
-  status    String   @map("status")
+  status    PaymentStatus @default(ESCROW) @map("status")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("payment")
+}
+
+model Interview {
+  id          String   @id @default(uuid()) @map("id")
+  candidateId String   @map("candidate_id")
+  recruiterId String   @map("recruiter_id")
+  candidate   User     @relation("CandidateInterviews", fields: [candidateId], references: [id])
+  recruiter   User     @relation("RecruiterInterviews", fields: [recruiterId], references: [id])
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("interview")
 }
